@@ -88,7 +88,7 @@ def is_admin(request):
 
 @app.get("/", response_class=HTMLResponse)
 def login_page(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+    return templates.TemplateResponse(request, "login.html", {"request": request})
 
 
 @app.post("/login")
@@ -114,7 +114,7 @@ def logout():
 def admin(request: Request):
     if not is_admin(request):
         return RedirectResponse("/")
-    return templates.TemplateResponse("dashboard.html", {"request": request})
+    return templates.TemplateResponse(request, "dashboard.html", {"request": request})
 
 
 @app.get("/admin/kb", response_class=HTMLResponse)
@@ -127,7 +127,7 @@ def kb_page(request: Request):
         SELECT id,name FROM knowledge_bases ORDER BY id
         """)).fetchall()
 
-    return templates.TemplateResponse("kb.html", {
+    return templates.TemplateResponse(request, "kb.html", {
         "request": request,
         "rows": rows
     })
@@ -175,7 +175,7 @@ def domains(request: Request):
         SELECT id,name FROM knowledge_bases
         """)).fetchall()
 
-    return templates.TemplateResponse("domains.html", {
+    return templates.TemplateResponse(request, "domains.html", {
         "request": request,
         "rows": rows,
         "kbs": kbs
