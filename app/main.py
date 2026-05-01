@@ -132,6 +132,28 @@ def kb_page(request: Request):
         "rows": rows
     })
 
+@app.post("/kb/create")
+def create_kb(name: str = Form(...)):
+    with engine.begin() as conn:
+        conn.execute(text("INSERT INTO knowledge_bases(name) VALUES (:n)"),
+                     {"n": name})
+    return RedirectResponse("/admin", 302)
+
+@app.get("/kb/{kb_id}")
+def kb_detail(request: Request, kb_id: int):
+    with engine.begin() as conn:
+        kb = conn.execute(text("SELECT * FROM knowledge_bases WHERE id=:id"),
+                          {"id": kb_id}).fetchone()
+
+        chunks = conn.execute(text("""
+            SELECT * FROM kb_chunks WHERE kb_id=:id
+        """), {"id": kb_id}).fetchall()
+
+    return templates.TemplateResponse(
+        request,
+        "kb.html",
+        {"request": request, "kb": kb, "chunks": chunks}
+    )
 
 @app.post("/admin/kb/add")
 def add_kb(request: Request, name: str = Form(...)):
