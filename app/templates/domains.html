@@ -1,0 +1,19 @@
+<h1>Allowed Websites</h1>
+
+<form method="post" action="/admin/domains/add">
+<input name="domain" placeholder="https://site.com">
+
+<select name="kb_id">
+{% for k in kbs %}
+<option value="{{k[0]}}">{{k[1]}}</option>
+{% endfor %}
+</select>
+
+<button>Add</button>
+</form>
+
+<ul>
+{% for r in rows %}
+<li>{{r[1]}} → {{r[2]}}</li>
+{% endfor %}
+</ul>

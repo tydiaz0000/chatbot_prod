@@ -1,0 +1,12 @@
+<h1>Knowledge Bases</h1>
+
+<form method="post" action="/admin/kb/add">
+<input name="name" placeholder="New KB">
+<button>Add</button>
+</form>
+
+<ul>
+{% for r in rows %}
+<li>{{r[0]}} - {{r[1]}}</li>
+{% endfor %}
+</ul>
