@@ -145,7 +145,18 @@ def add_kb(request: Request, name: str = Form(...)):
         """), {"n": name})
 
     return RedirectResponse("/admin/kb", 302)
+@app.post("/kb/{kb_id}/chunk/add")
+def add_chunk(kb_id: int,
+              title: str = Form(...),
+              content: str = Form(...)):
 
+    with engine.begin() as conn:
+        conn.execute(text("""
+            INSERT INTO kb_chunks(kb_id,title,content)
+            VALUES (:k,:t,:c)
+        """), {"k": kb_id, "t": title, "c": content})
+
+    return RedirectResponse(f"/kb/{kb_id}", 302)
 
 @app.get("/admin/domains", response_class=HTMLResponse)
 def domains(request: Request):
@@ -212,7 +223,7 @@ async def chat(req: Request):
         """), {"d": origin}).fetchone()
 
         if not row:
-            raise HTTPException(403, "Domain not allowed")
+            raise HTTPException(403, "Domain not allowed. ")
 
         kb_id = row[0]
 

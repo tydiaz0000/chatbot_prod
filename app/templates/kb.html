@@ -1,12 +1,16 @@
-<h1>Knowledge Bases</h1>
+<h1>KB: {{kb[1]}}</h1>
 
-<form method="post" action="/admin/kb/add">
-<input name="name" placeholder="New KB">
-<button>Add</button>
+<div class="card">
+<form method="post" action="/kb/{{kb[0]}}/chunk/add">
+<input name="title" placeholder="Chunk title">
+<textarea name="content" placeholder="Content"></textarea>
+<button>Add Chunk</button>
 </form>
+</div>
 
-<ul>
-{% for r in rows %}
-<li>{{r[0]}} - {{r[1]}}</li>
+{% for c in chunks %}
+<div class="card">
+<h3>{{c[2]}}</h3>
+<p>{{c[3]}}</p>
+</div>
 {% endfor %}
-</ul>
